@@ -58,53 +58,7 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        {{-- <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="{{url('/')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                           Home
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Category</div>
-                        <div id="category">
 
-                        </div>
-
-                        <div class="sb-sidenav-menu-heading">Addons</div>
-                        @can('checkmember')
-                            <a class="nav-link" href="{{url('cart')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
-                                Cart
-                            </a>
-                        @endcan
-
-                        <a class="nav-link" href="{{ route('compareProduct') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Compare Products
-                        </a>
-
-                        @can('crud-permission')
-                        <a class="nav-link" href="{{url('transaction')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
-                            History
-                        </a>
-                        <a class="nav-link" href="{{ url('brand') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-flag"></i></div>
-                            Brand
-                        </a>
-
-                        <a class="nav-link" href="{{ url('category') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-th-list"></i></div>
-                            Category
-                        </a>
-                        <a class="nav-link" href="{{route('product.create')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                            Add Product
-                        </a>
-                        @else
-                        <a class="nav-link" href="{{url('history')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
-                            History
-                        </a>
-                        @endcan --}}
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -137,22 +91,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     @yield('script')
     @yield('ajax')
-    {{-- <script>
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '{{route("loadNav")}}',
-        //     data: {
-        //         '_token': '<?php echo csrf_token() ?>',
-        //     },
-        //     success: function (data) {
-        //         $("#category").html(data.msg);
-        //     },
-        //     error: function (xhr) {
-        //         console.log(xhr);
-        //     }
-        // });
-
-    </script> --}}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="{{ asset ('sbadmin/js/scripts.js')}}"></script>
