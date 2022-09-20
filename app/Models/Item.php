@@ -11,6 +11,7 @@ class Item extends Model
 
     protected $table = 'items';
     protected $primaryKey = 'item_id';
+    public $timestamps = false;
 
     public function history()
     {

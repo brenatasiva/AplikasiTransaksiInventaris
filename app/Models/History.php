@@ -11,6 +11,7 @@ class History extends Model
 
     protected $table = 'histories';
     protected $primaryKey = 'history_id';
+    public $timestamps = false;
 
     public function item()
     {
@@ -20,5 +21,18 @@ class History extends Model
             'history_id',
             'item_id'
         )->withPivot('buy_price', 'quantity', 'subtotal');
+    }
+
+    public function insertHistory($items)
+    {
+        $total = 0;
+        $subtotal = 0;
+        foreach ($items as $id => $detail) {
+            $subtotal = $detail['price'] * $detail['quantity'];
+            $total += $detail['price'] * $detail['quantity'];
+            $this->item()->attach($id, ['quantity' => $detail['quantity'], 'subtotal' => $subtotal, 'buy_price' => $detail['price'], 'item_id' => $detail['item_id']]);
+        }
+
+        return $total;
     }
 }

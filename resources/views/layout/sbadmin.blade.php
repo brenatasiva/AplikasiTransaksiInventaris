@@ -31,7 +31,7 @@
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i> @if(Auth::user()){{Auth::user()->fullname}}@else Login/Register @endif</a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    @if (Auth::user() && Auth::user()->role->name=='Admin')
+                    @if (Auth::user() && Auth::user()->role=='Admin')
                     <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register Pegawai') }}</a>
                     <a class="dropdown-item" href="{{ url('user') }}">{{ __('Manage Pegawai') }}</a>
                     @endif
@@ -47,7 +47,6 @@
                     </form>
                     @else
                     <a href="/login" class="dropdown-item">Log In</a>
-                    <a href="/register" class="dropdown-item">Register</a>
                     @endif
                 </div>
             </li>
@@ -62,7 +61,7 @@
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as: @if(Auth::user()){{Auth::user()->role->name}}@endif</div>
+                    <div class="small">Logged in as: @if(Auth::user()){{Auth::user()->role}}@endif</div>
                 </div>
             </nav>
         </div>

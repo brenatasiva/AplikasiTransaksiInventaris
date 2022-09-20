@@ -35,7 +35,14 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Item();
+
+        $data->name = $request->get('name');
+        $data->price = $request->get('price');
+        $data->unit = $request->get('unit');
+        $data->stock = $request->get('stock');
+        $data->save();
+        return redirect()->route('item.index')->with('status', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -69,7 +76,12 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $item->name = $request->get('name');
+        $item->price = $request->get('price');
+        $item->unit = $request->get('unit');
+        $item->stock = $request->get('stock');
+        $item->save();
+        return redirect()->route('item.index')->with('status', 'Data barang berhasil dirubah');
     }
 
     /**

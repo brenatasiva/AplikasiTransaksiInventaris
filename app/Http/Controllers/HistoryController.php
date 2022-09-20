@@ -35,7 +35,12 @@ class HistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new History();
+
+        $data->date = $request->get('date');
+        $data->subtotal = $request->get('subtotal');
+        $data->save();
+        return redirect()->route('history.index')->with('status', 'Pembelian barang berhasil ditambahkan');
     }
 
     /**
