@@ -10,6 +10,7 @@ class Invoice extends Model
     use HasFactory;
 
     protected $table = 'invoices';
+    protected $primaryKey = 'invoice_id';
 
     public function item()
     {
@@ -19,5 +20,10 @@ class Invoice extends Model
             'history_id',
             'item_id'
         )->withPivot('price', 'quantity', 'subtotal');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 }

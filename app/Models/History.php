@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class History extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'histories';
+    protected $primaryKey = 'history_id';
 
     public function item()
     {

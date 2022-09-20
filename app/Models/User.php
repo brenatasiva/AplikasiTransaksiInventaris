@@ -10,9 +10,10 @@ class User extends Model
     use HasFactory;
 
     protected $table = 'users';
+    protected $primaryKey = 'user_id';
 
     public function invoice()
     {
-        return $this->belongsTo('App\Model\Invoice', 'user_id', 'id');
+        return $this->hasMany('App\Model\Invoice', 'user_id');
     }
 }

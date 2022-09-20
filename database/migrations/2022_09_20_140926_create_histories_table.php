@@ -15,7 +15,7 @@ class CreateHistoriesTable extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id('history_id');
-            $table->foreignId('item_id');
+            $table->foreign('item_id')->references('item_id')->on('items');
             $table->double('buy_price');
             $table->integer('quantity');
             $table->double('subtotal');

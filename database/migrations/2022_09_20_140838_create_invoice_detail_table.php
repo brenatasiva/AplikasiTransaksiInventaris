@@ -14,8 +14,8 @@ class CreateInvoiceDetailTable extends Migration
     public function up()
     {
         Schema::create('invoice_detail', function (Blueprint $table) {
-            $table->foreignId('invoice_id');
-            $table->foreignId('item_id');
+            $table->foreign('invoice_id')->references('invoice_id')->on('invoices');
+            $table->foreign('item_id')->references('item_id')->on('items');
             $table->double('price');
             $table->integer('quantity');
             $table->double('subtotal');
