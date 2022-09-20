@@ -19,8 +19,7 @@ use Illuminate\Support\Facades\Auth;
 // });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/register');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 });
 
 Auth::routes();
