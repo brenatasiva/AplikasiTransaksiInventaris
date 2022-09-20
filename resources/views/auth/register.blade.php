@@ -1,11 +1,14 @@
 @extends('layout.sbadmin')
 
 @section('content')
-<div class="container">
+    <h1 class="mt-4">Register</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active">Register</li>
+</ol>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -73,5 +76,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
