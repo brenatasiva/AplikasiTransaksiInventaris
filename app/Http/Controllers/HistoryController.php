@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class HistoryController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -86,5 +96,24 @@ class HistoryController extends Controller
     public function destroy(History $history)
     {
         //
+    }
+
+    public function buyItem(Request $request)//insert item that bought from supplier to table histories and history_details
+    {
+        // dd($request);
+        // $subtotal = 0;
+
+        // foreach($request as $r){ //count subtotal
+        //     $subtotal += $r->buyPrice * $r->quantity;
+        // }
+
+        $h = new History();
+        $h->total = 0;
+        $h->save(); //add item to table histories before adding anything to table history_details
+
+        $totalHarga = $h->insertHistoryDetail($request, $h->history_id);
+        $h->total = $totalHarga;
+        $h->save();
+        return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
     }
 }

@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+    Route::get('/', 'HomeController@index');
+    Route::get('/item', 'ItemController@index');
+    Route::get('/addItem', 'ItemController@create');
+
+    Route::post('/submitAddedItem', 'HistoryController@buyItem');
+    Route::post('/formEditItem', 'ItemController@showEditModal');
 });
 
 Auth::routes();

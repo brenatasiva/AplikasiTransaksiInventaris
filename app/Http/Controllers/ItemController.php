@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +25,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $data = Item::all();
+        return view('item.index', compact('data'));
     }
 
     /**
@@ -24,7 +36,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        $data = Item::pluck('name');
+        return view('item.addItem', compact('data'));
     }
 
     /**
@@ -40,9 +53,9 @@ class ItemController extends Controller
         $data->name = $request->get('name');
         $data->price = $request->get('price');
         $data->unit = $request->get('unit');
-        $data->stock = $request->get('stock');
+        $data->stock += $request->get('stock');
         $data->save();
-        return redirect()->route('item.index')->with('status', 'Barang berhasil ditambahkan');
+        return redirect()->route('item.addItem')->with('status', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -93,5 +106,14 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    public function showEditModal(Request $request)
+    {
+        $id = $request->get('itemId');
+        $data = Item::find($id);
+        return response()->json(array(
+            'msg' => view('item.modal', compact('data'))->render()
+        ), 200);
     }
 }
