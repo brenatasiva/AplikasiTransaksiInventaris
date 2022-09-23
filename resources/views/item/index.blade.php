@@ -2,13 +2,17 @@
 <h1 class="mt-4">Barang</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">Lihat Barang</li>
+    <li class="breadcrumb-item active">Daftar Barang</li>
 </ol>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCreate" onclick="">
+    Tambah Jenis Barang
+</button><br><br>
+
 <table id="table_id" class="display">
     <thead>
         <tr>
             <th>Nama Barang</th>
-            <th>Harga</th>
+            <th>Harga Jual</th>
             <th>Stok</th>
             <th>Satuan</th>
             <th>Aksi</th>
@@ -38,13 +42,22 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">Tambah Jenis Barang</h4>
             </div>
-            <form method="post" action="">
+            <form method="post" action="{{route('item.store')}}" autocomplete="off">
                 <div class="modal-body">
                     @csrf
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
+                        <label for="exampleInputEmail1">Nama Barang</label>
                         <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp"
-                            placeholder="Name">
+                            placeholder="Contoh: Paku Payung" required><br>
+                        <label for="exampleInputEmail1">Harga</label>
+                        <input type="number" class="form-control" id="price" name="price" aria-describedby="emailHelp"
+                            placeholder="Harga Jual"><br>
+                        <label for="exampleInputEmail1">Stok</label>
+                        <input type="number" class="form-control" id="name" name="stock" aria-describedby="emailHelp"
+                            placeholder="Stok" required><br>
+                        <label for="exampleInputEmail1">Satuan</label>
+                        <input type="text" class="form-control" id="unit" name="unit" aria-describedby="emailHelp"
+                            placeholder="Contoh: Kg, Meter, Pcs" required>
                     </div>
                 </div>
                 <div class="modal-footer">

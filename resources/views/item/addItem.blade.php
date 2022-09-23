@@ -4,7 +4,7 @@
 <h1 class="mt-4">Barang</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">Tambah Barang</li>
+    <li class="breadcrumb-item active">Pembelian Barang</li>
 </ol>
 <div class="container">
     <div class="row clearfix">

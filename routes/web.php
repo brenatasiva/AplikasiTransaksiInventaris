@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('item', 'ItemController');
+
     Route::get('/', 'HomeController@index');
     Route::get('/item', 'ItemController@index');
     Route::get('/addItem', 'ItemController@create');

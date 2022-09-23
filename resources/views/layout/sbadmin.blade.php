@@ -94,7 +94,7 @@
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="/item">Lihat Barang</a>
+                                <a class="nav-link" href="/item">Daftar Barang</a>
                             </nav>
                             @if (Auth::user()->role=='Admin')
                                 <nav class="sb-sidenav-menu-nested nav">

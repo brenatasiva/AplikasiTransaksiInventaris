@@ -53,9 +53,9 @@ class ItemController extends Controller
         $data->name = $request->get('name');
         $data->price = $request->get('price');
         $data->unit = $request->get('unit');
-        $data->stock += $request->get('stock');
+        $data->stock = $request->get('stock');
         $data->save();
-        return redirect()->route('item.addItem')->with('status', 'Barang berhasil ditambahkan');
+        return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -94,7 +94,7 @@ class ItemController extends Controller
         $item->unit = $request->get('unit');
         $item->stock = $request->get('stock');
         $item->save();
-        return redirect()->route('item.index')->with('status', 'Data barang berhasil dirubah');
+        return redirect()->back()->with('status', 'Data barang berhasil dirubah');
     }
 
     /**
@@ -113,7 +113,7 @@ class ItemController extends Controller
         $id = $request->get('itemId');
         $data = Item::find($id);
         return response()->json(array(
-            'msg' => view('item.modal', compact('data'))->render()
+            'msg' => view('item.modalEdit', compact('data'))->render()
         ), 200);
     }
 }
