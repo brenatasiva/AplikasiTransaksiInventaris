@@ -23,13 +23,13 @@ class Item extends Model
         )->withPivot('buy_price', 'quantity', 'subtotal');
     }
 
-    public function item()
+    public function invoice()
     {
         return $this->belongsToMany(
             'App\Models\Invoice',
             'invoice_details',
-            'item_id',
-            'invoice_id'
+            'invoice_id',
+            'item_id'
         )->withPivot('price', 'quantity', 'subtotal');
     }
 }

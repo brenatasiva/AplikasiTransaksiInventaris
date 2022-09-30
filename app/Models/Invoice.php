@@ -17,8 +17,8 @@ class Invoice extends Model
     {
         return $this->belongsToMany(
             'App\Models\Item',
-            'history_details',
-            'history_id',
+            'invoice_details',
+            'invoice_id',
             'item_id'
         )->withPivot('price', 'quantity', 'subtotal');
     }

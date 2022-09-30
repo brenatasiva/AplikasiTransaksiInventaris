@@ -24,7 +24,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $data = Invoice::all();
+        return view('invoice.index', compact('data'));
     }
 
     /**
@@ -91,5 +92,19 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         //
+    }
+
+    public function showDetailModal(Request $request)
+    {
+        $id = $request->get('invoiceId');
+        $data = Invoice::find($id)->item()->get();
+        return response()->json(array(
+            'msg' => view('invoice.modalDetail', compact('data'))->render()
+        ), 200);
+    }
+
+    public function getInvoiceDetail($id)
+    {
+        # code...
     }
 }

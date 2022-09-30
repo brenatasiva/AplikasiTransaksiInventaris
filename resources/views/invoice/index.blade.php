@@ -1,42 +1,45 @@
-@extends('layout.sbadmin') @section('content')
-<h1 class="mt-4">Barang</h1>
+@extends('layout.sbadmin')
+
+@section('content')
+<h1 class="mt-4">Transaksi</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">Daftar Barang</li>
+    <li class="breadcrumb-item active">Transaksi</li>
 </ol>
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCreate" onclick="">
-    Tambah Jenis Barang
+    Tambah Transaksi
 </button><br><br>
-
-
+<h3>Daftar Transaksi</h3>
 <table id="table_id" class="display">
     <thead>
         <tr>
-            <th>Nama Barang</th>
-            <th>Harga Jual</th>
-            <th>Stok</th>
-            <th>Satuan</th>
-            <th>Aksi</th>
+            <th>ID Nota</th>
+            <th>Nama Penjual</th>
+            <th>Nama Pelanggan</th>
+            <th>Tanggal Pembelian</th>
+            <th>Total</th>
+            <th>lain-lain</th>
         </tr>
     </thead>
     <tbody>
         @isset($data) 
             @foreach ($data as $d)
                 <tr>
-                    <td>{{$d->name}}</td>
-                    <td>{{number_format($d->price)}}</td>
-                    <td>{{$d->stock}}</td>
-                    <td>{{$d->unit}}</td>
-                    <td><button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalEditItem" onclick="modalEdit({{$d->item_id}})">Edit</button></td>
+                    <td>{{$d->invoice_id}}</td>
+                    <td>{{$d->user->name}}</td>
+                    <td>{{$d->customer_name}}</td>
+                    <td>{{$d->date}}</td>
+                    <td>{{number_format($d->total)}}</td>
+                    <td><button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
                 </tr>
             @endforeach 
         @endisset
     </tbody>
 </table>
-@endsection 
 
+@endsection
 @section('modal')
-<div class="modal fade" id="modalCreate" tabindex="-1" role="basic" aria-hidden="true">
+{{-- <div class="modal fade" id="modalCreate" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -68,13 +71,13 @@
             </form>
         </div>
     </div>
-</div>
+</div> --}}
 
-<div class="modal fade" id="modalEditItem" tabindex="-1" aria-labelledby="modalEditItem" aria-hidden="true">
+<div class="modal fade" id="modalDetailInvoice" tabindex="-1" aria-labelledby="modalDetailInvoice" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditItem">Edit Item</h5>
+                <h5 class="modal-title" id="modalDetailInvoice">Detail Nota</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -88,16 +91,15 @@
     </div>
 </div>
 @endsection
-
 @section('ajax')
 <script>
-    function modalEdit(itemId) {
+    function modalDetail(invoiceId) {
         $.ajax({
             type: 'POST',
-            url: 'formEditItem',
+            url: 'formDetailInvoice',
             data: {
                 '_token': '<?php echo csrf_token() ?>',
-                'itemId': itemId,
+                'invoiceId': invoiceId,
             },
             success: function (data) {
                 $("#modalContent").html(data.msg);
@@ -109,7 +111,6 @@
     }
 </script>
 @endsection
-
 @section('script')
 <script>
     $(document).ready(function () {
