@@ -95,23 +95,14 @@ class HistoryController extends Controller
 
     public function buyItem(Request $request)//insert item that bought from supplier to table histories and history_details
     {
-        try {
-            \DB::beginTransaction();
-        
-            $h = new History();
-            $h->total = 0;
-            $h->save(); //add item to table histories before adding anything to table history_details
-    
-            $total = $h->insertHistoryDetail($request, $h->history_id);
-            $h->total = $total;
-            $h->save();
-            return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
-            
-            \DB::commit();
-        
-        } catch (Throwable $e) {
-            \DB::rollback();
-        }
+        $h = new History();
+        $h->total = 0;
+        $h->save(); //add item to table histories before adding anything to table history_details
+
+        $total = $h->insertHistoryDetail($request, $h->history_id);
+        $h->total = $total;
+        $h->save();
+        return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
 
     }
 }
