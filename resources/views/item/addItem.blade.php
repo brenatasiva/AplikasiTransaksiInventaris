@@ -52,8 +52,8 @@
         $("#add_row").click(function() {
             $('tr').find('input')
             $('#addr' + i).html("<td><input type='text' name='name[]" +
-                 "'  placeholder='Nama Barang' class='form-control autocomplete searchBox' required/></td><td><input type='text' name='buyPrice[]" +
-                     "' placeholder='Harga Beli' class='form-control ' required/></td><td><input type='text' name='quantity[]" +
+                 "'  placeholder='Nama Barang' class='form-control autocomplete searchBox' required/></td><td><input type='number' name='buyPrice[]" +
+                     "' placeholder='Harga Beli' class='form-control ' required/></td><td><input type='number' name='quantity[]" +
                         "' placeholder='Jumlah yang dibeli' class='form-control' required/>" + 
                         '<td><button type="button" id="add_row" class="btn btn-danger deleteRow">Hapus Baris</button></td>');
 

@@ -22,10 +22,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/item', 'ItemController@index');
     Route::get('/addItem', 'ItemController@create');
     Route::get('/transaction', 'InvoiceController@index');
+    Route::get('/addInvoice', 'InvoiceController@create');
 
     Route::post('/submitAddedItem', 'HistoryController@buyItem');
     Route::post('/formEditItem', 'ItemController@showEditModal');
     Route::post('/formDetailInvoice', 'InvoiceController@showDetailModal');
+    Route::post('/submitInvoice', 'InvoiceController@store');
 });
 
 Auth::routes();

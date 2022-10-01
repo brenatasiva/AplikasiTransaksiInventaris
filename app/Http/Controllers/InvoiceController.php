@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -35,7 +38,8 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $data = Item::all();
+        return view('invoice.addInvoice', compact('data'));
     }
 
     /**
@@ -46,7 +50,18 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $i = new Invoice();
+        
+        $i->user_id = Auth::user()->user_id;
+        $i->customer_name = $request->get('customerName');
+        $i->total = 0;
+        $i->save(); //add item to table invoices before adding anything to table invoice_details
+        
+        $total = $i->insertInvoiceDetail($request, $i->invoice_id);
+        $i->total = $total;
+        $i->save();
+
+        return redirect()->back()->with('status', 'Transaksi berhasil');
     }
 
     /**
@@ -101,10 +116,5 @@ class InvoiceController extends Controller
         return response()->json(array(
             'msg' => view('invoice.modalDetail', compact('data'))->render()
         ), 200);
-    }
-
-    public function getInvoiceDetail($id)
-    {
-        # code...
     }
 }

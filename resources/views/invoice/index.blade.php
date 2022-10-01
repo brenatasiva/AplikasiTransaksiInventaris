@@ -6,9 +6,8 @@
     <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item active">Transaksi</li>
 </ol>
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCreate" onclick="">
-    Tambah Transaksi
-</button><br><br>
+<a class="btn btn-primary btn-lg" href="{{ url('/addInvoice') }}">Tambah Transaksi</a>
+<br><br>
 <h3>Daftar Transaksi</h3>
 <table id="table_id" class="display">
     <thead>

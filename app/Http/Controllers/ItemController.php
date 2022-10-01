@@ -89,12 +89,12 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        $item->name = $request->get('name');
-        $item->price = $request->get('price');
-        $item->unit = $request->get('unit');
-        $item->stock = $request->get('stock');
-        $item->save();
-        return redirect()->back()->with('status', 'Data barang berhasil dirubah');
+        // $item->name = $request->get('name');
+        // $item->price = $request->get('price');
+        // $item->unit = $request->get('unit');
+        // $item->stock = $request->get('stock');
+        // $item->save();
+        // return redirect()->back()->with('status', 'Data barang berhasil dirubah');
     }
 
     /**

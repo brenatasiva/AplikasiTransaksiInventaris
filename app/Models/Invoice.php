@@ -27,4 +27,22 @@ class Invoice extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+
+    public function insertInvoiceDetail($items, $id)
+    {
+        // dd($items);
+        $total = 0;
+        $subtotal = 0;
+        for ($i=0; $i < count($items->name); $i++) { 
+            $item = Item::where('name', 'like', '%' . $items->name[$i] . '%')->first();
+            $item->stock = $item->stock - $items->quantity[$i];
+            $item->save();//reduce stock
+
+            $subtotal = $items->price[$i] * $items->quantity[$i];
+            $total += $subtotal;
+            $this->item()->attach($id, ['quantity' => $items->quantity[$i], 'subtotal' => $subtotal, 'price' => $items->price[$i], 'item_id' => $item->item_id]);
+        }
+
+        return $total;
+    }
 }

@@ -29,7 +29,7 @@ class History extends Model
         $total = 0;
         $subtotal = 0;
         for ($i=0; $i < count($items->name); $i++) { 
-            $item = Item::where('name', '=',$items->name[$i])->first();
+            $item = Item::where('name', 'like', '%' . $items->name[$i] . '%')->first();
             $item->stock = $item->stock + $items->quantity[$i];
             $item->save();//add stock
 
