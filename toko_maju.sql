@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2022 at 01:17 PM
+-- Generation Time: Nov 29, 2022 at 09:03 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -38,15 +38,6 @@ CREATE TABLE `histories` (
 --
 
 INSERT INTO `histories` (`history_id`, `date`, `total`) VALUES
-(2, '2022-09-23 19:06:07', 0),
-(3, '2022-09-23 19:08:16', 0),
-(4, '2022-09-23 19:09:56', 0),
-(5, '2022-09-23 19:10:24', 0),
-(6, '2022-09-23 19:14:10', 0),
-(7, '2022-09-23 19:14:35', 0),
-(8, '2022-09-23 19:15:53', 0),
-(9, '2022-09-23 19:15:58', 0),
-(10, '2022-09-23 19:16:10', 0),
 (11, '2022-09-23 19:18:49', 1200),
 (12, '2022-09-23 19:20:39', 3600),
 (13, '2022-09-23 19:22:56', 3600),
@@ -56,7 +47,8 @@ INSERT INTO `histories` (`history_id`, `date`, `total`) VALUES
 (17, '2022-09-30 13:50:47', 0),
 (18, '2022-09-30 13:51:51', 37500),
 (19, '2022-09-30 13:52:25', 25000),
-(20, '2022-09-30 13:54:34', 0);
+(20, '2022-09-30 13:54:34', 0),
+(26, '2022-11-29 07:10:01', 20000);
 
 -- --------------------------------------------------------
 
@@ -85,7 +77,8 @@ INSERT INTO `history_details` (`history_id`, `item_id`, `buy_price`, `quantity`,
 (15, 2, 130, 10, 1300),
 (16, 2, 10000, 5, 50000),
 (18, 4, 7500, 5, 37500),
-(19, 4, 5000, 5, 25000);
+(19, 4, 5000, 5, 25000),
+(26, 1, 2000, 10, 20000);
 
 -- --------------------------------------------------------
 
@@ -98,18 +91,22 @@ CREATE TABLE `invoices` (
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `customer_name` text NOT NULL,
-  `total` double NOT NULL
+  `total` double NOT NULL,
+  `profit` double DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `invoices`
 --
 
-INSERT INTO `invoices` (`invoice_id`, `user_id`, `date`, `customer_name`, `total`) VALUES
-(1, 1, '2022-09-26 17:58:49', 'Bejo', 80000),
-(2, 1, '2022-09-30 15:40:57', 'Andi', 50000),
-(4, 1, '2022-10-01 18:11:30', 'Bolly', 8000),
-(5, 1, '2022-10-01 18:13:12', 'Bolly2', 3000);
+INSERT INTO `invoices` (`invoice_id`, `user_id`, `date`, `customer_name`, `total`, `profit`) VALUES
+(1, 1, '2022-09-26 17:58:49', 'Bejo', 80000, 0),
+(2, 1, '2022-09-30 15:40:57', 'Andi', 50000, 0),
+(4, 1, '2022-10-01 18:11:30', 'Bolly', 8000, 0),
+(5, 1, '2022-10-01 18:13:12', 'Bolly2', 3000, 0),
+(6, 1, '2022-11-29 14:23:49', 'Jhonny', 0, 0),
+(7, 1, '2022-11-29 14:26:28', 'Jhonny', 10000, 0),
+(8, 1, '2022-11-29 14:40:07', 'Mike', 10000, 2500);
 
 -- --------------------------------------------------------
 
@@ -121,6 +118,7 @@ CREATE TABLE `invoice_details` (
   `invoice_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `price` double NOT NULL,
+  `buy_price` double DEFAULT 0,
   `quantity` int(11) NOT NULL,
   `subtotal` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -129,14 +127,16 @@ CREATE TABLE `invoice_details` (
 -- Dumping data for table `invoice_details`
 --
 
-INSERT INTO `invoice_details` (`invoice_id`, `item_id`, `price`, `quantity`, `subtotal`) VALUES
-(1, 1, 20000, 3, 60000),
-(4, 1, 2000, 1, 2000),
-(5, 1, 1000, 1, 1000),
-(1, 2, 10000, 2, 20000),
-(4, 2, 3000, 2, 6000),
-(5, 2, 1000, 2, 2000),
-(2, 4, 10000, 5, 50000);
+INSERT INTO `invoice_details` (`invoice_id`, `item_id`, `price`, `buy_price`, `quantity`, `subtotal`) VALUES
+(1, 1, 20000, 0, 3, 60000),
+(4, 1, 2000, 0, 1, 2000),
+(5, 1, 1000, 0, 1, 1000),
+(7, 1, 2000, 1500, 5, 10000),
+(8, 1, 2000, 1500, 5, 10000),
+(1, 2, 10000, 0, 2, 20000),
+(4, 2, 3000, 0, 2, 6000),
+(5, 2, 1000, 0, 2, 2000),
+(2, 4, 10000, 0, 5, 50000);
 
 -- --------------------------------------------------------
 
@@ -148,6 +148,7 @@ CREATE TABLE `items` (
   `item_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `price` double DEFAULT 0,
+  `buy_price` double DEFAULT 0,
   `unit` text NOT NULL,
   `stock` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -156,10 +157,10 @@ CREATE TABLE `items` (
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`item_id`, `name`, `price`, `unit`, `stock`) VALUES
-(1, 'Pipa PVC - Diameter 10cm', 2000, 'Meter', 9),
-(2, 'Paku Payung', 3000, 'Pcs', 18),
-(4, 'Palu', 10000, 'Pcs', 10);
+INSERT INTO `items` (`item_id`, `name`, `price`, `buy_price`, `unit`, `stock`) VALUES
+(1, 'Pipa PVC - Diameter 10cm', 2000, 1500, 'Meter', 5),
+(2, 'Paku Payung', 3000, 0, 'Pcs', 18),
+(4, 'Palu', 10000, 0, 'Pcs', 10);
 
 -- --------------------------------------------------------
 
@@ -235,13 +236,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `histories`
 --
 ALTER TABLE `histories`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `items`
