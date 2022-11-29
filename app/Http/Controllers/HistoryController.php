@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 
 class HistoryController extends Controller
@@ -24,7 +25,8 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        //
+        $data = null;
+        return view('report.index', compact('data'));
     }
 
     /**
@@ -54,9 +56,20 @@ class HistoryController extends Controller
      * @param  \App\Models\History  $history
      * @return \Illuminate\Http\Response
      */
-    public function show(History $history)
+    public function show(Request $request)
     {
-        //
+        // \DB::enableQueryLog();
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $dataBuy = History::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+        $dataSell = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+        $data = [];
+        $data['buy'] = $dataBuy;
+        $data['sell'] = $dataSell;
+        // dd(\DB::getQueryLog());
+        return response()->json(array(
+            'msg' => $data
+        ), 200);
     }
 
     /**
@@ -93,6 +106,18 @@ class HistoryController extends Controller
         //
     }
 
+    public function buyIndex()
+    {
+        $data = History::all();
+        return view('report.buyIndex', compact('data'));
+    }
+
+    public function sellIndex()
+    {
+        $data = Invoice::all();
+        return view('report.sellIndex', compact('data'));
+    }
+
     public function buyItem(Request $request)//insert item that bought from supplier to table histories and history_details
     {
         $h = new History();
@@ -104,5 +129,31 @@ class HistoryController extends Controller
         $h->save();
         return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
 
+    }
+
+    public function showDetailModal(Request $request)
+    {
+        $id = $request->get('historyId');
+        $data = History::find($id)->item()->get();
+        
+        return response()->json(array(
+            'msg' => view('report.modalDetailHistory', compact('data'))->render()
+        ), 200);
+    }
+
+    public function calcProfit(Request $request)
+    {
+        // \DB::enableQueryLog();
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $data = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+        $profit = 0;
+        foreach($data as $d){
+            $profit += $d['profit'];
+        }
+        // dd(\DB::getQueryLog());
+        return response()->json(array(
+            'msg' => $profit
+        ), 200);
     }
 }

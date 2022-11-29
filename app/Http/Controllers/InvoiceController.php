@@ -57,8 +57,9 @@ class InvoiceController extends Controller
         $i->total = 0;
         $i->save(); //add item to table invoices before adding anything to table invoice_details
         
-        $total = $i->insertInvoiceDetail($request, $i->invoice_id);
-        $i->total = $total;
+        $iid = $i->insertInvoiceDetail($request, $i->invoice_id);
+        $i->total = $iid['total'];
+        $i->profit = $iid['profit'];
         $i->save();
 
         return redirect()->back()->with('status', 'Transaksi berhasil');
@@ -117,4 +118,14 @@ class InvoiceController extends Controller
             'msg' => view('invoice.modalDetail', compact('data'))->render()
         ), 200);
     }
+
+    public function showDetailModalReport(Request $request)
+    {
+        $id = $request->get('invoiceId');
+        $data = Invoice::find($id)->item()->get();
+        return response()->json(array(
+            'msg' => view('report.modalDetailInvoice', compact('data'))->render()
+        ), 200);
+    }
 }
+

@@ -101,7 +101,7 @@
             });
         });
 
-        $('body').on('click', '.quantity', function(){
+        $('body').on('change', '.quantity', function(){
             countSubtotal($(this));
             countTotal($(this));
         });

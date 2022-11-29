@@ -9,6 +9,7 @@
 <a class="btn btn-primary btn-lg" href="{{ url('/addInvoice') }}">Tambah Transaksi</a>
 <br><br>
 <h3>Daftar Transaksi</h3>
+
 <table id="table_id" class="display">
     <thead>
         <tr>
@@ -17,20 +18,26 @@
             <th>Nama Pelanggan</th>
             <th>Tanggal Pembelian</th>
             <th>Total</th>
-            <th>lain-lain</th>
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
         @isset($data) 
+        @php
+            $i = 1
+        @endphp
             @foreach ($data as $d)
                 <tr>
-                    <td>{{$d->invoice_id}}</td>
+                    <td>{{$i}}</td>
                     <td>{{$d->user->name}}</td>
                     <td>{{$d->customer_name}}</td>
                     <td>{{$d->date}}</td>
                     <td>{{number_format($d->total)}}</td>
-                    <td><button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
+                    <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
                 </tr>
+                @php
+                    $i++
+                @endphp
             @endforeach 
         @endisset
     </tbody>

@@ -30,8 +30,12 @@ class History extends Model
         $subtotal = 0;
         for ($i=0; $i < count($items->name); $i++) { 
             $item = Item::where('name', 'like', '%' . $items->name[$i] . '%')->first();
+            $newBuyPrice = ($item->buy_price * $item->stock + $items->buyPrice[$i] * $items->quantity[$i]) / ($item->stock + $items->quantity[$i]);//hitung harga kulak baru
+            $item->buy_price = $newBuyPrice;//update harga kulak
             $item->stock = $item->stock + $items->quantity[$i];
+            
             $item->save();//add stock
+
 
             $subtotal = $items->buyPrice[$i] * $items->quantity[$i];
             $total += $subtotal;

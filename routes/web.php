@@ -23,11 +23,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addItem', 'ItemController@create');
     Route::get('/transaction', 'InvoiceController@index');
     Route::get('/addInvoice', 'InvoiceController@create');
+    // Route::get('/report', 'HistoryController@index');
+    Route::get('/buyReport', 'HistoryController@buyIndex');
+    Route::get('/sellReport', 'HistoryController@sellIndex');
 
     Route::post('/submitAddedItem', 'HistoryController@buyItem');
     Route::post('/formEditItem', 'ItemController@showEditModal');
     Route::post('/formDetailInvoice', 'InvoiceController@showDetailModal');
     Route::post('/submitInvoice', 'InvoiceController@store');
+    Route::post('/showReport', 'HistoryController@show');
+    Route::post('/formDetailHistory', 'HistoryController@showDetailModal');
+    Route::post('/formDetailInvoiceReport', 'InvoiceController@showDetailModalReport');
+    Route::post('/calcProfit', 'HistoryController@calcProfit');
 });
 
 Auth::routes();

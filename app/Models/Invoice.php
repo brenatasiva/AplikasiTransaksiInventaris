@@ -20,7 +20,7 @@ class Invoice extends Model
             'invoice_details',
             'invoice_id',
             'item_id'
-        )->withPivot('price', 'quantity', 'subtotal');
+        )->withPivot('price', 'buy_price', 'quantity', 'subtotal');
     }
 
     public function user()
@@ -32,17 +32,25 @@ class Invoice extends Model
     {
         // dd($items);
         $total = 0;
+        $profit = 0;
+        $array = [];
         $subtotal = 0;
         for ($i=0; $i < count($items->name); $i++) { 
             $item = Item::where('name', 'like', '%' . $items->name[$i] . '%')->first();
+            
+            $subtotal = $items->price[$i] * $items->quantity[$i];
+            $total += $subtotal;
+            $this->item()->attach($id, ['quantity' => $items->quantity[$i], 'subtotal' => $subtotal, 'price' => $items->price[$i], 'buy_price' => $item->buy_price, 'item_id' => $item->item_id]);
+
             $item->stock = $item->stock - $items->quantity[$i];
             $item->save();//reduce stock
 
-            $subtotal = $items->price[$i] * $items->quantity[$i];
-            $total += $subtotal;
-            $this->item()->attach($id, ['quantity' => $items->quantity[$i], 'subtotal' => $subtotal, 'price' => $items->price[$i], 'item_id' => $item->item_id]);
+            $profit += ($items->price[$i] - $item->buy_price) * $items->quantity[$i];
         }
 
-        return $total;
+        $array['total'] = $total;
+        $array['profit'] = $profit;
+        
+        return $array;
     }
 }

@@ -18,8 +18,8 @@ class Item extends Model
         return $this->belongsToMany(
             'App\Models\History',
             'history_details',
-            'item_id',
-            'history_id'
+            'history_id',
+            'item_id'
         )->withPivot('buy_price', 'quantity', 'subtotal');
     }
 
@@ -30,6 +30,6 @@ class Item extends Model
             'invoice_details',
             'invoice_id',
             'item_id'
-        )->withPivot('price', 'quantity', 'subtotal');
+        )->withPivot('price', 'buy_price', 'quantity', 'subtotal');
     }
 }
