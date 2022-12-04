@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Item;
+use App\Models\Invoice;
 
 class HomeController extends Controller
 {
@@ -24,6 +27,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data = [];
+        $u = user::all()->count();
+        $i = item::all()->count();
+        $in = invoice::all()->count();
+
+        $data['user'] = $u;
+        $data['item'] = $i;
+        $data['invoice'] = $in;
+        
+        return view('home', compact('data'));
     }
 }

@@ -127,5 +127,7 @@ class InvoiceController extends Controller
             'msg' => view('report.modalDetailInvoice', compact('data'))->render()
         ), 200);
     }
+
+    
 }
 
