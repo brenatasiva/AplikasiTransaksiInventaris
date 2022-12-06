@@ -14,6 +14,7 @@
         <tr>
             <th>Nama Barang</th>
             <th>Harga Jual</th>
+            <th>Harga Beli</th>
             <th>Stok</th>
             <th>Satuan</th>
             <th>Aksi</th>
@@ -25,6 +26,7 @@
                 <tr>
                     <td>{{$d->name}}</td>
                     <td>{{number_format($d->price)}}</td>
+                    <td>{{number_format($d->buy_price)}}</td>
                     <td>{{$d->stock}}</td>
                     <td>{{$d->unit}}</td>
                     <td><button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalEditItem" onclick="modalEdit({{$d->item_id}})">Edit</button></td>
