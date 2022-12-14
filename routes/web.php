@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/submitAddedItem', 'HistoryController@buyItem');
     Route::post('/formEditItem', 'ItemController@showEditModal');
+    Route::post('/editItem/{id}', 'ItemController@update');
     Route::post('/formDetailInvoice', 'InvoiceController@showDetailModal');
     Route::post('/submitInvoice', 'InvoiceController@store');
     Route::post('/showReport', 'HistoryController@show');
