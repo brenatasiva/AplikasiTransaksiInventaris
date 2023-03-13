@@ -2,22 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\HistoryDetails;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class HistoryDetailsController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->role != "Admin") return redirect()->back();
-        $data = User::all();
-        return view('user.index', compact('data'));
+        //
     }
 
     /**
@@ -54,10 +41,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\HistoryDetails  $historyDetails
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(HistoryDetails $historyDetails)
     {
         //
     }
@@ -65,10 +52,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\HistoryDetails  $historyDetails
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(HistoryDetails $historyDetails)
     {
         //
     }
@@ -77,35 +64,32 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\HistoryDetails  $historyDetails
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, HistoryDetails $historyDetails)
     {
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->save();
-        return redirect()->back()->with('status', 'Data user berhasil dirubah');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\HistoryDetails  $historyDetails
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(HistoryDetails $historyDetails)
     {
-        $user->delete();
-        return redirect()->back()->with('status', 'User berhasil dihapus');
+        //
     }
 
-    public function showEditModal(Request $request)
+    public function showDetailModal(Request $request)
     {
-        $id = $request->get('userId');
-        $data = User::find($id);
+        $id = $request->get('historyId');
+        $data = HistoryDetails::all()->where('history_id', $id);
+        
         return response()->json(array(
-            'msg' => view('user.modalEdit', compact('data'))->render()
+            'msg' => view('report.modalDetailHistory', compact('data'))->render()
         ), 200);
     }
 }

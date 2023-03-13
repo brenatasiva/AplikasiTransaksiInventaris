@@ -52,6 +52,7 @@ class ItemController extends Controller
 
         $data->name = $request->get('name');
         $data->price = $request->get('price');
+        $data->buy_price = $request->get('buyPrice');
         $data->unit = $request->get('unit');
         $data->stock = $request->get('stock');
         $data->save();
@@ -106,7 +107,8 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+        return redirect()->back()->with('status', 'Barang berhasil dihapus');
     }
 
     public function showEditModal(Request $request)

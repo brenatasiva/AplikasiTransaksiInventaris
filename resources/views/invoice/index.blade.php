@@ -29,10 +29,10 @@
             @foreach ($data as $d)
                 <tr>
                     <td>{{$i}}</td>
-                    <td>{{$d->user->name}}</td>
+                    <td>{{$d->seller_name}}</td>
                     <td>{{$d->customer_name}}</td>
                     <td>{{$d->date}}</td>
-                    <td>{{number_format($d->total)}}</td>
+                    <td>Rp. {{number_format($d->total)}}</td>
                     <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
                 </tr>
                 @php
@@ -119,9 +119,7 @@
 @endsection
 @section('script')
 <script>
-    $(document).ready(function () {
-        $("#table_id").DataTable();
-    });
+    $("#table_id").DataTable();
 </script>
 
 @endsection

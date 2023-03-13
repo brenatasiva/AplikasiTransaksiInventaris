@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Toko Maju</title>
     <link href="{{ asset ('sbadmin/css/styles.css')}}" rel="stylesheet" />
     <link href="{{ asset ('sbadmin/css/jquery-ui.css')}}" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
@@ -83,10 +83,10 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/register">Register Pegawai</a>
+                                    <a class="nav-link" href="/register">Register User</a>
                                 </nav>
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/register">Manage Pegawai</a>
+                                    <a class="nav-link" href="/user">Manage User</a>
                                 </nav>
                             </div>
 

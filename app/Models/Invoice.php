@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\InvoiceDetails;
 
 class Invoice extends Model
 {
@@ -13,20 +14,20 @@ class Invoice extends Model
     protected $primaryKey = 'invoice_id';
     public $timestamps = false;
 
-    public function item()
-    {
-        return $this->belongsToMany(
-            'App\Models\Item',
-            'invoice_details',
-            'invoice_id',
-            'item_id'
-        )->withPivot('price', 'buy_price', 'quantity', 'subtotal');
-    }
+    // public function item()
+    // {
+    //     return $this->belongsToMany(
+    //         'App\Models\Item',
+    //         'invoice_details',
+    //         'invoice_id',
+    //         'item_id'
+    //     )->withPivot('price', 'buy_price', 'quantity', 'subtotal');
+    // }
 
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'user_id');
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo('App\Models\User', 'user_id');
+    // }
 
     public function insertInvoiceDetail($items, $id)
     {
@@ -40,7 +41,15 @@ class Invoice extends Model
             
             $subtotal = $items->price[$i] * $items->quantity[$i];
             $total += $subtotal;
-            $this->item()->attach($id, ['quantity' => $items->quantity[$i], 'subtotal' => $subtotal, 'price' => $items->price[$i], 'buy_price' => $item->buy_price, 'item_id' => $item->item_id]);
+
+            $invdet = new InvoiceDetails();
+            $invdet->invoice_id = $id;
+            $invdet->item_name = $item->name;
+            $invdet->price = $item->price;
+            $invdet->buy_price = $item->buy_price;
+            $invdet->quantity = $items->quantity[$i];
+            $invdet->subtotal = $subtotal;
+            $invdet->save();
 
             $item->stock = $item->stock - $items->quantity[$i];
             $item->save();//reduce stock

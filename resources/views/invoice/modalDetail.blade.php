@@ -17,16 +17,16 @@
                 {{-- @dd($d) --}}
                     <tr>
                         <td>
-                            {{$d->name}}
+                            {{$d->item_name}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->price)}}
+                            Rp. {{number_format($d->price)}}
                         </td>
                         <td>
-                            {{$d->pivot->quantity}}
+                            {{$d->quantity}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->subtotal)}}
+                            Rp. {{number_format($d->subtotal)}}
                         </td>
                     </tr>
                 @endforeach

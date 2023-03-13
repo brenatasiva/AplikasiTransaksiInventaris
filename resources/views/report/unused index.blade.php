@@ -43,8 +43,6 @@
 @endsection
 @section('script')
 <script>
-    $(document).ready(function () {
-    });
     var table = $("#table_id").DataTable();
 
     function showReport() {

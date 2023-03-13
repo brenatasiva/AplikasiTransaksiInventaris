@@ -15,10 +15,10 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    public function invoice()
-    {
-        return $this->hasMany('App\Model\Invoice', 'user_id');
-    }
+    // public function invoice()
+    // {
+    //     return $this->hasMany('App\Model\Invoice', 'user_id');
+    // }
 
     use Notifiable;
 

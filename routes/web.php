@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('item', 'ItemController');
+    Route::resource('user', 'UserController');
 
     Route::get('/', 'HomeController@index');
    
@@ -26,7 +27,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addInvoice', 'InvoiceController@create');
     // Route::get('/report', 'HistoryController@index');
     Route::get('/buyReport', 'HistoryController@buyIndex');
-    Route::get('/sellReport', 'HistoryController@sellIndex');
+    Route::get('/sellReport', 'InvoiceController@sellIndex');
+    Route::get('/user', 'UserController@index');
+    Route::get('/updateDatatable', 'InvoiceController@updateDatatable');
+    
 
     Route::post('/submitAddedItem', 'HistoryController@buyItem');
     Route::post('/formEditItem', 'ItemController@showEditModal');
@@ -34,9 +38,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/formDetailInvoice', 'InvoiceController@showDetailModal');
     Route::post('/submitInvoice', 'InvoiceController@store');
     Route::post('/showReport', 'HistoryController@show');
-    Route::post('/formDetailHistory', 'HistoryController@showDetailModal');
-    Route::post('/formDetailInvoiceReport', 'InvoiceController@showDetailModalReport');
-    Route::post('/calcProfit', 'HistoryController@calcProfit');
+    Route::post('/formDetailHistory', 'HistoryDetailsController@showDetailModal');
+    Route::post('/formDetailInvoiceReport', 'InvoiceDetailsController@showDetailModalReport');
+    Route::post('/calcProfit', 'InvoiceController@calcProfit');
+    Route::post('/formEditUser', 'UserController@showEditModal');
+    Route::post('/sellDatatable', 'InvoiceController@datatable');
 });
 
 Auth::routes();

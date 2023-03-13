@@ -1,3 +1,4 @@
+{{-- @dd($data) --}}
 <form method="post" action="" autocomplete="off">
     @csrf
     @method('PUT')
@@ -19,22 +20,22 @@
                 {{-- @dd($d) --}}
                     <tr>
                         <td>
-                            {{$d->name}}
+                            {{$d->item_name}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->price)}}
+                            Rp. {{number_format($d->price)}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->buy_price)}}
+                            Rp. {{number_format($d->buy_price)}}
                         </td>
                         <td>
-                            {{$d->pivot->quantity}}
+                            {{$d->quantity}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->subtotal)}}
+                            Rp. {{number_format($d->subtotal)}}
                         </td>
                         <td>
-                            {{number_format(($d->pivot->price - $d->pivot->buy_price)*$d->pivot->quantity)}}
+                            Rp. {{number_format(($d->price - $d->buy_price)*$d->quantity)}}
                         </td>
                     </tr>
                 @endforeach

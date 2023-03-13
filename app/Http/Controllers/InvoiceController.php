@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Item;
-use App\Models\User;
+use App\Models\InvoiceDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,7 +52,7 @@ class InvoiceController extends Controller
     {
         $i = new Invoice();
         
-        $i->user_id = Auth::user()->user_id;
+        $i->seller_name = Auth::user()->name;
         $i->customer_name = $request->get('customerName');
         $i->total = 0;
         $i->save(); //add item to table invoices before adding anything to table invoice_details
@@ -113,21 +113,44 @@ class InvoiceController extends Controller
     public function showDetailModal(Request $request)
     {
         $id = $request->get('invoiceId');
-        $data = Invoice::find($id)->item()->get();
+        $data = InvoiceDetails::all()->where('invoice_id', $id);
         return response()->json(array(
             'msg' => view('invoice.modalDetail', compact('data'))->render()
         ), 200);
     }
 
-    public function showDetailModalReport(Request $request)
+    public function sellIndex()
     {
-        $id = $request->get('invoiceId');
-        $data = Invoice::find($id)->item()->get();
+        $data = Invoice::all();
+        return view('report.sellIndex', compact('data'));
+    }
+
+    public function calcProfit(Request $request)
+    {
+        // \DB::enableQueryLog();
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $data = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+        // dd($data);
+        $profit = 0;
+        $omset = 0;
+        foreach($data as $d){
+            $profit += $d['profit'];
+            $omset += $d['total'];
+        }
+        // dd($data);
+        // dd(\DB::getQueryLog());
         return response()->json(array(
-            'msg' => view('report.modalDetailInvoice', compact('data'))->render()
+            'profit' => $profit,
+            'omset' => $omset,
+            'invoice' => $data
         ), 200);
     }
 
-    
+    public function datatable()
+    {
+        $data = Invoice::all();
+        return response()->json($data, 200);
+    }
 }
 

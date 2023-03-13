@@ -15,19 +15,18 @@
             <tbody>
                 @csrf
                 @foreach ($data as $d)
-                    
                     <tr>
                         <td>
-                            {{$d->name}}
+                            {{$d->item_name}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->buy_price)}}
+                            Rp. {{number_format($d->buy_price)}}
                         </td>
                         <td>
-                            {{$d->pivot->quantity}}
+                            {{$d->quantity}}
                         </td>
                         <td>
-                            {{number_format($d->pivot->subtotal)}}
+                            Rp. {{number_format($d->subtotal)}}
                         </td>
                     </tr>
                 @endforeach

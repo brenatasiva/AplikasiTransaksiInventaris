@@ -3,7 +3,7 @@
 <h1 class="mt-4">Laporan</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">Laporan Pembelian</li>
+    <li class="breadcrumb-item active">Laporan - Laporan Pembelian</li>
 </ol>
 
 
@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{$i}}</td>
                     <td>{{$d->date}}</td>
-                    <td>{{number_format($d->total)}}</td>
+                    <td>Rp. {{number_format($d->total)}}</td>
                     <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailHistory" onclick="modalDetail({{$d->history_id}})">Detail</button></td>
                 </tr>
                 @php

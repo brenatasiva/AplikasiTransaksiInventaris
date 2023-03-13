@@ -3,20 +3,21 @@
 <h1 class="mt-4">Laporan</h1>
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">Laporan Penjualan</li>
+    <li class="breadcrumb-item active">Laporan - Laporan Penjualan</li>
 </ol>
 
 
-<h4>Hitung Keuntungan</h4>
+<h4>Hitung Keuntungan dan Omset</h4>
 <input type="date" id="startDate"> -
 <input type="date" id="endDate">
 <button type="button" class="btn btn-primary" onclick="calcProfit()">
     Hitung
 </button><br>
-<label id="profit"></label><br><br>
+<label id="profit"></label><br>
+<label id="omset"></label><br><br>
 
 
-<table id="table_id" class="display">
+{{-- <table id="table_id" class="display">
     <thead>
         <tr>
             <th>ID Nota</th>
@@ -29,39 +30,85 @@
         </tr>
     </thead>
     <tbody>
-        @isset($data) 
-        @php
-            $i = 1
-        @endphp
-            @foreach ($data as $d)
-                <tr>
-                    <td>{{$i}}</td>
-                    <td>{{$d->user->name}}</td>
-                    <td>{{$d->customer_name}}</td>
-                    <td>{{$d->date}}</td>
-                    <td>{{number_format($d->total)}}</td>
-                    <td>{{number_format($d->profit)}}</td>
-                    <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
-                </tr>
+        <div id="range">
+
+        </div>
+
+        <div id="firstLoad">
+            @isset($data) 
                 @php
-                    $i++
+                    $i = 1
                 @endphp
-            @endforeach 
-        @endisset
+                @foreach ($data as $d)
+                    <tr>
+                        <td>{{$d->invoice_id}}</td>
+                        <td>{{$d->seller_name}}</td>
+                        <td>{{$d->customer_name}}</td>
+                        <td>{{$d->date}}</td>
+                        <td>Rp. {{number_format($d->total)}}</td>
+                        <td>Rp. {{number_format($d->profit)}}</td>
+                        <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
+                    </tr>
+                    @php
+                        $i++
+                    @endphp
+                @endforeach   
+            @endisset
+        </div>
     </tbody>
+</table> --}}
+
+<table id="table2"  class="display">
+    <thead>
+        <tr>
+            <th>ID Nota</th>
+            <th>Nama Penjual</th>
+            <th>Nama Pelanggan</th>
+            <th>Tanggal Pembelian</th>
+            <th>Total</th>
+            <th>Keuntungan</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
 </table>
 
 
 @endsection
 @section('script')
 <script>
-    $(document).ready(function () {
+    // $("#table_id").DataTable();
+    var table;
+    $.ajax({
+        type: "Post",
+        url: "sellDatatable",
+        data: {'_token': '<?php echo csrf_token() ?>'},
+        success: function (response) {
+            console.log(response);
+            table = $('#table2').DataTable({
+                data: response,
+                columns: [
+                    { data: 'invoice_id' },
+                    { data: 'seller_name' },
+                    { data: 'customer_name' },
+                    { data: 'date' },
+                    { data: 'total' },
+                    { data: 'profit' },
+                    {data: 'invoice_id' , render : function ( data, type, row, meta ) {
+                        return '<button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail('+data+')">Detail</button>'
+                    }},
+                ]
+            });
+
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
     });
-    var table = $("#table_id").DataTable();
 
     function calcProfit() {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
+        table.clear();
 
         $.ajax({
             type: 'POST',
@@ -72,7 +119,11 @@
                 'endDate': endDate,
             },
             success: function (data) {
-                $('#profit').html(data['msg']);
+                table.clear();
+                table.rows.add(data['invoice']);
+                table.draw();
+                $('#profit').html('Keuntungan = Rp. '+data['profit'].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#omset').html('Omset = Rp. '+data['omset'].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
             },
             error: function (xhr) {
                 alert("Pastikan tanggal sudah sesuai");

@@ -29,7 +29,14 @@
                     <td>{{number_format($d->buy_price)}}</td>
                     <td>{{$d->stock}}</td>
                     <td>{{$d->unit}}</td>
-                    <td><button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalEditItem" onclick="modalEdit({{$d->item_id}})">Edit</button></td>
+                    <td>
+                        <button type="button" id="add_row" class="btn btn-warning" data-toggle="modal" data-target="#modalEditItem" onclick="modalEdit({{$d->item_id}})">Edit</button>
+                        <form method="post" action="{{route('item.destroy', $d->item_id)}}">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger" onclick="if(!confirm('Apakah anda yakin ingin menghapus barang ini?')){return false;}">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach 
         @endisset
@@ -52,9 +59,12 @@
                         <label for="exampleInputEmail1">Nama Barang</label>
                         <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp"
                             placeholder="Contoh: Paku Payung" required><br>
-                        <label for="exampleInputEmail1">Harga</label>
+                        <label for="exampleInputEmail1">Harga Beli</label>
+                        <input type="number" class="form-control" id="buyPrice" name="buyPrice" aria-describedby="emailHelp"
+                            placeholder="Harga Beli"required><br>
+                        <label for="exampleInputEmail1">Harga Jual</label>
                         <input type="number" class="form-control" id="price" name="price" aria-describedby="emailHelp"
-                            placeholder="Harga Jual"><br>
+                            placeholder="Harga Jual"required><br>
                         <label for="exampleInputEmail1">Stok</label>
                         <input type="number" class="form-control" id="name" name="stock" aria-describedby="emailHelp"
                             placeholder="Stok" required><br>
@@ -114,9 +124,7 @@
 
 @section('script')
 <script>
-    $(document).ready(function () {
-        $("#table_id").DataTable();
-    });
+    $("#table_id").DataTable();
 </script>
 
 @endsection

@@ -112,12 +112,6 @@ class HistoryController extends Controller
         return view('report.buyIndex', compact('data'));
     }
 
-    public function sellIndex()
-    {
-        $data = Invoice::all();
-        return view('report.sellIndex', compact('data'));
-    }
-
     public function buyItem(Request $request)//insert item that bought from supplier to table histories and history_details
     {
         $h = new History();
@@ -131,16 +125,6 @@ class HistoryController extends Controller
 
     }
 
-    public function showDetailModal(Request $request)
-    {
-        $id = $request->get('historyId');
-        $data = History::find($id)->item()->get();
-        
-        return response()->json(array(
-            'msg' => view('report.modalDetailHistory', compact('data'))->render()
-        ), 200);
-    }
-
     public function calcProfit(Request $request)
     {
         // \DB::enableQueryLog();
@@ -148,12 +132,15 @@ class HistoryController extends Controller
         $endDate = $request->get('endDate');
         $data = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
         $profit = 0;
+        $omset = 0;
         foreach($data as $d){
             $profit += $d['profit'];
+            $omset += $d['total'];
         }
         // dd(\DB::getQueryLog());
         return response()->json(array(
-            'msg' => $profit
+            'profit' => $profit,
+            'omset' => $omset
         ), 200);
     }
 }
