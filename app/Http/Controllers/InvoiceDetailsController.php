@@ -85,11 +85,17 @@ class InvoiceDetailsController extends Controller
 
     public function showDetailModalReport(Request $request)
     {
-        $id = $request->get('invoiceId');
-        $data = InvoiceDetails::all()->where('invoice_id', $id);
-        
-        return response()->json(array(
-            'msg' => view('report.modalDetailInvoice', compact('data'))->render()
-        ), 200);
+        try {
+            //code...
+            $id = $request->get('invoiceId');
+            $data = InvoiceDetails::all()->where('invoice_id', $id);
+            
+            return response()->json(array(
+                'msg' => view('report.modalDetailInvoice', compact('data'))->render()
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 }

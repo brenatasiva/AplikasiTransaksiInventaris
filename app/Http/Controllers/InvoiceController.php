@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Item;
 use App\Models\InvoiceDetails;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +28,14 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $data = Invoice::all();
-        return view('invoice.index', compact('data'));
+        try {
+            //code...
+            $data = Invoice::all();
+            return view('invoice.index', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -38,8 +45,14 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $data = Item::all();
-        return view('invoice.addInvoice', compact('data'));
+        try {
+            //code...
+            $data = Item::all()->sortBy("name");
+            return view('invoice.addInvoice', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -50,19 +63,31 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $i = new Invoice();
-        
-        $i->seller_name = Auth::user()->name;
-        $i->customer_name = $request->get('customerName');
-        $i->total = 0;
-        $i->save(); //add item to table invoices before adding anything to table invoice_details
-        
-        $iid = $i->insertInvoiceDetail($request, $i->invoice_id);
-        $i->total = $iid['total'];
-        $i->profit = $iid['profit'];
-        $i->save();
+        try {
+            //code...
+            $i = new Invoice();
+            if($request->name == null) throw new Exception("");
+            
+            $i->seller_name = Auth::user()->name;
+            $i->customer_name = $request->get('customerName')==null ? "-": $request->get('customerName');
+            $i->total = 0;
+            $i->pay = (double)str_replace(',', '', $request->get('pay'));
+            $i->save(); //add item to table invoices before adding anything to table invoice_details
+            
+            $iid = $i->insertInvoiceDetail($request, $i->invoice_id);
+            $i->total = $iid['total'];
+            $i->profit = $iid['profit'];
+            $i->save();
 
-        return redirect()->back()->with('status', 'Transaksi berhasil');
+            $invoice = Invoice::all()->where('invoice_id', $i->invoice_id);
+            $invoiceDetails = InvoiceDetails::all()->where('invoice_id', $i->invoice_id);
+
+            return view('invoice.printInvoice', compact('invoice', 'invoiceDetails'))->with('success', 'Transaksi berhasil');
+            // return redirect()->back()->with('success', 'Transaksi berhasil');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Transaksi gagal');
+        }
     }
 
     /**
@@ -112,45 +137,85 @@ class InvoiceController extends Controller
 
     public function showDetailModal(Request $request)
     {
-        $id = $request->get('invoiceId');
-        $data = InvoiceDetails::all()->where('invoice_id', $id);
-        return response()->json(array(
-            'msg' => view('invoice.modalDetail', compact('data'))->render()
-        ), 200);
+        try {
+            //code...
+            $id = $request->get('invoiceId');
+            $data = InvoiceDetails::all()->where('invoice_id', $id);
+            return response()->json(array(
+                'msg' => view('invoice.modalDetail', compact('data'))->render()
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     public function sellIndex()
     {
-        $data = Invoice::all();
-        return view('report.sellIndex', compact('data'));
+        try {
+            //code...
+            $data = Invoice::all();
+            return view('report.sellIndex', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     public function calcProfit(Request $request)
     {
-        // \DB::enableQueryLog();
-        $startDate = $request->get('startDate');
-        $endDate = $request->get('endDate');
-        $data = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
-        // dd($data);
-        $profit = 0;
-        $omset = 0;
-        foreach($data as $d){
-            $profit += $d['profit'];
-            $omset += $d['total'];
+        try {
+            //code...
+            // \DB::enableQueryLog();
+            $startDate = $request->get('startDate');
+            $endDate = $request->get('endDate');
+            $data = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+            // dd($data);
+            $profit = 0;
+            $omset = 0;
+            foreach($data as $d){
+                $profit += $d['profit'];
+                $omset += $d['total'];
+            }
+            // dd($data);
+            // dd(\DB::getQueryLog());
+            return response()->json(array(
+                'profit' => $profit,
+                'omset' => $omset,
+                'invoice' => $data
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return redirect()->back()->with('fail', 'Gagal');
         }
-        // dd($data);
-        // dd(\DB::getQueryLog());
-        return response()->json(array(
-            'profit' => $profit,
-            'omset' => $omset,
-            'invoice' => $data
-        ), 200);
     }
 
     public function datatable()
     {
-        $data = Invoice::all();
-        return response()->json($data, 200);
+        try {
+            //code...
+            $data = Invoice::all();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal datatable');
+        }
+    }
+
+    public function generateSellPdf(Request $request)
+    {
+        $startDate = $request->get('startDate');
+        $endDate = $request->get('endDate');
+        $invoice = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+        $profit = 0;
+        $omset = 0;
+        foreach($invoice as $i){
+            $profit += $i['profit'];
+            $omset += $i['total'];
+        }
+
+        return view('report.generatePdf', compact('invoice', 'startDate', 'endDate', 'omset', 'profit'));
     }
 }
 

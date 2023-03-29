@@ -25,9 +25,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->role != "Admin") return redirect()->back();
-        $data = User::all();
-        return view('user.index', compact('data'));
+        try {
+            //code...
+            if(Auth::user()->role != "Admin") return redirect()->back();
+            $data = User::all();
+            return view('user.index', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -82,10 +88,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->save();
-        return redirect()->back()->with('status', 'Data user berhasil dirubah');
+        try {
+            //code...
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+            $user->save();
+            return redirect()->back()->with('success', 'Data user berhasil dirubah');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal mengubah user');
+        }
     }
 
     /**
@@ -96,16 +108,28 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->back()->with('status', 'User berhasil dihapus');
+        try {
+            //code...
+            $user->delete();
+            return redirect()->back()->with('success', 'User berhasil dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal menghapus user');
+        }
     }
 
     public function showEditModal(Request $request)
     {
-        $id = $request->get('userId');
-        $data = User::find($id);
-        return response()->json(array(
-            'msg' => view('user.modalEdit', compact('data'))->render()
-        ), 200);
+        try {
+            //code...
+            $id = $request->get('userId');
+            $data = User::find($id);
+            return response()->json(array(
+                'msg' => view('user.modalEdit', compact('data'))->render()
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 }

@@ -30,7 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sellReport', 'InvoiceController@sellIndex');
     Route::get('/user', 'UserController@index');
     Route::get('/updateDatatable', 'InvoiceController@updateDatatable');
-    
 
     Route::post('/submitAddedItem', 'HistoryController@buyItem');
     Route::post('/formEditItem', 'ItemController@showEditModal');
@@ -43,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/calcProfit', 'InvoiceController@calcProfit');
     Route::post('/formEditUser', 'UserController@showEditModal');
     Route::post('/sellDatatable', 'InvoiceController@datatable');
+    Route::post('/generateSellPdf', 'InvoiceController@generateSellPdf');
 });
 
 Auth::routes();

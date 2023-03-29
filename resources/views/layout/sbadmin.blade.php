@@ -9,7 +9,6 @@
     <meta name="author" content="" />
     <title>Toko Maju</title>
     <link href="{{ asset ('sbadmin/css/styles.css')}}" rel="stylesheet" />
-    <link href="{{ asset ('sbadmin/css/jquery-ui.css')}}" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
         crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
@@ -144,11 +143,15 @@
             <main>
                 <div class="container-fluid">
                     <div class="container">
-                        @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-@endif
+                        @if (session('success'))
+                            <div class="alert-solid alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('fail'))
+                            <div class="alert-solid alert-danger">
+                                {{ session('fail') }}
+                            </div>
+                        @endif
                         @yield('content')
                     </div>
                 </div>
@@ -168,6 +171,7 @@
         </div>
     </div>
     @yield('modal')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>

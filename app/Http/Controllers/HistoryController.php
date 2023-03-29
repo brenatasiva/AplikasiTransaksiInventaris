@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Codedge\Fpdf\Fpdf\Fpdf;
 
 class HistoryController extends Controller
 {
@@ -25,8 +26,14 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        $data = null;
-        return view('report.index', compact('data'));
+        try {
+            //code...
+            $data = null;
+            return view('report.index', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -58,18 +65,24 @@ class HistoryController extends Controller
      */
     public function show(Request $request)
     {
-        // \DB::enableQueryLog();
-        $startDate = $request->get('startDate');
-        $endDate = $request->get('endDate');
-        $dataBuy = History::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
-        $dataSell = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
-        $data = [];
-        $data['buy'] = $dataBuy;
-        $data['sell'] = $dataSell;
-        // dd(\DB::getQueryLog());
-        return response()->json(array(
-            'msg' => $data
-        ), 200);
+        try {
+            //code...
+            // \DB::enableQueryLog();
+            $startDate = $request->get('startDate');
+            $endDate = $request->get('endDate');
+            $dataBuy = History::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+            $dataSell = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+            $data = [];
+            $data['buy'] = $dataBuy;
+            $data['sell'] = $dataSell;
+            // dd(\DB::getQueryLog());
+            return response()->json(array(
+                'msg' => $data
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -108,39 +121,57 @@ class HistoryController extends Controller
 
     public function buyIndex()
     {
-        $data = History::all();
-        return view('report.buyIndex', compact('data'));
+        try {
+            //code...
+            $data = History::all();
+            return view('report.buyIndex', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     public function buyItem(Request $request)//insert item that bought from supplier to table histories and history_details
     {
-        $h = new History();
-        $h->total = 0;
-        $h->save(); //add item to table histories before adding anything to table history_details
-
-        $total = $h->insertHistoryDetail($request, $h->history_id);
-        $h->total = $total;
-        $h->save();
-        return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
+        try {
+            //code...
+            $h = new History();
+            $h->total = 0;
+            $h->save(); //add item to table histories before adding anything to table history_details
+    
+            $total = $h->insertHistoryDetail($request, $h->history_id);
+            $h->total = $total;
+            $h->save();
+            return redirect()->back()->with('success', 'Barang berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal menambahkan barang');
+        }
 
     }
 
     public function calcProfit(Request $request)
     {
-        // \DB::enableQueryLog();
-        $startDate = $request->get('startDate');
-        $endDate = $request->get('endDate');
-        $data = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
-        $profit = 0;
-        $omset = 0;
-        foreach($data as $d){
-            $profit += $d['profit'];
-            $omset += $d['total'];
+        try {
+            //code...
+            // \DB::enableQueryLog();
+            $startDate = $request->get('startDate');
+            $endDate = $request->get('endDate');
+            $data = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
+            $profit = 0;
+            $omset = 0;
+            foreach($data as $d){
+                $profit += $d['profit'];
+                $omset += $d['total'];
+            }
+            // dd(\DB::getQueryLog());
+            return response()->json(array(
+                'profit' => $profit,
+                'omset' => $omset
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
         }
-        // dd(\DB::getQueryLog());
-        return response()->json(array(
-            'profit' => $profit,
-            'omset' => $omset
-        ), 200);
     }
 }

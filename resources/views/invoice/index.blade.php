@@ -18,6 +18,8 @@
             <th>Nama Pelanggan</th>
             <th>Tanggal Pembelian</th>
             <th>Total</th>
+            <th>Bayar</th>
+            <th>Kembalian</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -33,6 +35,8 @@
                     <td>{{$d->customer_name}}</td>
                     <td>{{$d->date}}</td>
                     <td>Rp. {{number_format($d->total)}}</td>
+                    <td>Rp. {{number_format($d->pay)}}</td>
+                    <td>Rp. {{number_format($d->pay - $d->total)}}</td>
                     <td><button type="button" id="add_row" class="btn btn-secondary" data-toggle="modal" data-target="#modalDetailInvoice" onclick="modalDetail({{$d->invoice_id}})">Detail</button></td>
                 </tr>
                 @php

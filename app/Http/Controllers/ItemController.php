@@ -25,8 +25,14 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $data = Item::all();
-        return view('item.index', compact('data'));
+        try {
+            //code...
+            $data = Item::all();
+            return view('item.index', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -36,8 +42,14 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $data = Item::pluck('name');
-        return view('item.addItem', compact('data'));
+        try {
+            //code...
+            $data = Item::pluck('name');
+            return view('item.addItem', compact('data'));
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 
     /**
@@ -48,15 +60,21 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new Item();
-
-        $data->name = $request->get('name');
-        $data->price = $request->get('price');
-        $data->buy_price = $request->get('buyPrice');
-        $data->unit = $request->get('unit');
-        $data->stock = $request->get('stock');
-        $data->save();
-        return redirect()->back()->with('status', 'Barang berhasil ditambahkan');
+        try {
+            //code...
+            $data = new Item();
+    
+            $data->name = $request->get('name');
+            $data->price = $request->get('price');
+            $data->buy_price = $request->get('buyPrice');
+            $data->unit = $request->get('unit');
+            $data->stock = $request->get('stock');
+            $data->save();
+            return redirect()->back()->with('success', 'Barang berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal menambahkan barang');
+        }
     }
 
     /**
@@ -90,13 +108,19 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        $item->name = $request->get('name');
-        $item->price = $request->get('price');
-        $item->buy_price = $request->get('buyPrice');
-        $item->unit = $request->get('unit');
-        $item->stock = $request->get('stock');
-        $item->save();
-        return redirect()->back()->with('status', 'Data barang berhasil dirubah');
+        try {
+            //code...
+            $item->name = $request->get('name');
+            $item->price = $request->get('price');
+            $item->buy_price = $request->get('buyPrice');
+            $item->unit = $request->get('unit');
+            $item->stock = $request->get('stock');
+            $item->save();
+            return redirect()->back()->with('success', 'Data barang berhasil dirubah');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal mengubah barang');
+        }
     }
 
     /**
@@ -107,16 +131,28 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        $item->delete();
-        return redirect()->back()->with('status', 'Barang berhasil dihapus');
+        try {
+            //code...
+            $item->delete();
+            return redirect()->back()->with('success', 'Barang berhasil dihapus');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal menghapus barang');
+        }
     }
 
     public function showEditModal(Request $request)
     {
-        $id = $request->get('itemId');
-        $data = Item::find($id);
-        return response()->json(array(
-            'msg' => view('item.modalEdit', compact('data'))->render()
-        ), 200);
+        try {
+            //code...
+            $id = $request->get('itemId');
+            $data = Item::find($id);
+            return response()->json(array(
+                'msg' => view('item.modalEdit', compact('data'))->render()
+            ), 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('fail', 'Gagal');
+        }
     }
 }

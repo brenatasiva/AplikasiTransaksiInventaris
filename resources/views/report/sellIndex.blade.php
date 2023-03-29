@@ -7,15 +7,26 @@
 </ol>
 
 
-<h4>Hitung Keuntungan dan Omset</h4>
-<input type="date" id="startDate"> -
-<input type="date" id="endDate">
-<button type="button" class="btn btn-primary" onclick="calcProfit()">
-    Hitung
-</button><br>
-<label id="profit"></label><br>
-<label id="omset"></label><br><br>
-
+<form action="{{url('/generateSellPdf')}}" method="POST">
+    <div class="form-group row">
+        <h4 class="col-md-12">Hitung Keuntungan dan Omset</h4>
+        @csrf
+        <input class="col-md-4 form-control" type="date" name="startDate" id="startDate">
+        <label><b class="col-md-1">-</b></label>
+        <input class="col-md-4 form-control" type="date" name="endDate" id="endDate">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary" onclick="calcProfit()">
+                Hitung
+            </button>
+            <button type="submit" class="btn btn-warning" id="btnGeneratePdf">Generate PDF</button>
+        </div>
+    </div>
+</form>
+<div class="col-md-3 text-black bg-warning" id="result">
+    <label>Keuntungan = Rp. <span id="showProfit"></span></label><br>
+    <label>Omset = Rp. <span id="showOmset"></span></label>
+</div>
+<br><br>
 
 {{-- <table id="table_id" class="display">
     <thead>
@@ -76,6 +87,10 @@
 @endsection
 @section('script')
 <script>
+    $(document).ready(function() {
+        $('#result').hide();
+        $('#btnGeneratePdf').hide();
+    });
     // $("#table_id").DataTable();
     var table;
     $.ajax({
@@ -122,8 +137,10 @@
                 table.clear();
                 table.rows.add(data['invoice']);
                 table.draw();
-                $('#profit').html('Keuntungan = Rp. '+data['profit'].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-                $('#omset').html('Omset = Rp. '+data['omset'].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#showProfit').html(data['profit'].toLocaleString());
+                $('#showOmset').html(data['omset'].toLocaleString());
+                $('#result').show();
+                $('#btnGeneratePdf').show();
             },
             error: function (xhr) {
                 alert("Pastikan tanggal sudah sesuai");

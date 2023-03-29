@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2023 at 03:42 PM
+-- Generation Time: Mar 29, 2023 at 05:00 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -58,10 +58,20 @@ CREATE TABLE `invoices` (
   `invoice_id` int(11) NOT NULL,
   `seller_name` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `customer_name` text NOT NULL,
+  `customer_name` text NOT NULL DEFAULT '-',
   `total` double NOT NULL,
+  `pay` int(11) NOT NULL,
   `profit` double NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`invoice_id`, `seller_name`, `date`, `customer_name`, `total`, `pay`, `profit`) VALUES
+(181, 'Admin', '2023-03-29 11:14:06', '-', 5000, 100000, 3000),
+(182, 'Admin', '2023-03-29 12:20:20', '-', 95000, 100000, 55480),
+(183, 'Admin', '2023-03-29 12:25:48', '-', 15000, 20000, 6480);
 
 -- --------------------------------------------------------
 
@@ -78,6 +88,19 @@ CREATE TABLE `invoice_details` (
   `quantity` int(11) NOT NULL,
   `subtotal` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoice_details`
+--
+
+INSERT INTO `invoice_details` (`invoice_details_id`, `invoice_id`, `item_name`, `price`, `buy_price`, `quantity`, `subtotal`) VALUES
+(148, 181, 'Cutter', 5000, 2000, 1, 5000),
+(149, 182, 'Cutter', 5000, 2000, 5, 25000),
+(150, 182, 'Lem Fox', 3000, 1500, 5, 15000),
+(151, 182, 'Lem UHU', 3000, 1500, 5, 15000),
+(152, 182, 'Paku Payung', 3000, 1704, 5, 15000),
+(153, 182, 'Pipa PVC - Diameter 10cm', 5000, 1200, 5, 25000),
+(154, 183, 'Paku Payung', 3000, 1704, 5, 15000);
 
 -- --------------------------------------------------------
 
@@ -99,8 +122,11 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`item_id`, `name`, `price`, `buy_price`, `unit`, `stock`) VALUES
-(2, 'Paku Payung', 3000, 1704, 'Pcs', 100),
-(8, 'Pipa PVC - Diameter 10cm', 5000, 1200, 'Meter', 25);
+(2, 'Paku Payung', 3000, 1704, 'Pcs', 85),
+(8, 'Pipa PVC - Diameter 10cm', 5000, 1200, 'Meter', 20),
+(9, 'Cutter', 5000, 2000, 'Pcs', -105),
+(10, 'Lem Fox', 3000, 1500, 'Pcs', 145),
+(12, 'Lem UHU', 3000, 1500, 'Pcs', 114);
 
 -- --------------------------------------------------------
 
@@ -185,19 +211,19 @@ ALTER TABLE `history_details`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT for table `invoice_details`
 --
 ALTER TABLE `invoice_details`
-  MODIFY `invoice_details_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
