@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- 'invoice', 'startDate', 'endDate', 'omset', 'profit' --}}
-<button class="btn" id="export" onclick="exportPDF('dataToPdf')">Save</button>
+<button class="btn btn-primary" id="export" onclick="exportPDF('dataToPdf')">Save as pdf</button>
 <div id="dataToPdf">
     <div class="form-group row">
         <div class="">
@@ -82,7 +82,7 @@
         function (dispose) {
             // dispose: object with X, Y of the last line add to the PDF 
             //          this allow the insertion of new lines after html
-            doc.save('Test.pdf');
+            doc.save('Rekap Penjualan.pdf');
         }, margins);
     }
 </script>
