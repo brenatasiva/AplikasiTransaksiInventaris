@@ -16,33 +16,33 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('item', 'ItemController');
-    Route::resource('user', 'UserController');
-
+    Route::resource('user', 'UserController')->middleware('can:admin-permission');
+    Route::resource('item', 'ItemController')->middleware('can:admin-permission');
+    
     Route::get('/', 'HomeController@index');
-   
-    Route::get('/item', 'ItemController@index');
-    Route::get('/addItem', 'ItemController@create');
+    
+    Route::get('/item', 'ItemController@index')->middleware('can:admin-permission');
+    Route::get('/addItem', 'ItemController@create')->middleware('can:admin-permission');
     Route::get('/transaction', 'InvoiceController@index');
     Route::get('/addInvoice', 'InvoiceController@create');
     // Route::get('/report', 'HistoryController@index');
-    Route::get('/buyReport', 'HistoryController@buyIndex');
-    Route::get('/sellReport', 'InvoiceController@sellIndex');
-    Route::get('/user', 'UserController@index');
-    Route::get('/updateDatatable', 'InvoiceController@updateDatatable');
+    Route::get('/buyReport', 'HistoryController@buyIndex')->middleware('can:admin-permission');
+    Route::get('/sellReport', 'InvoiceController@sellIndex')->middleware('can:admin-permission');
+    Route::get('/user', 'UserController@index')->middleware('can:admin-permission');
+    Route::get('/updateDatatable', 'InvoiceController@updateDatatable')->middleware('can:admin-permission');
 
-    Route::post('/submitAddedItem', 'HistoryController@buyItem');
-    Route::post('/formEditItem', 'ItemController@showEditModal');
-    Route::post('/editItem/{id}', 'ItemController@update');
+    Route::post('/submitAddedItem', 'HistoryController@buyItem')->middleware('can:admin-permission');
+    Route::post('/formEditItem', 'ItemController@showEditModal')->middleware('can:admin-permission');
+    Route::post('/editItem/{id}', 'ItemController@update')->middleware('can:admin-permission');
     Route::post('/formDetailInvoice', 'InvoiceController@showDetailModal');
     Route::post('/submitInvoice', 'InvoiceController@store');
-    Route::post('/showReport', 'HistoryController@show');
-    Route::post('/formDetailHistory', 'HistoryDetailsController@showDetailModal');
+    Route::post('/showReport', 'HistoryController@show')->middleware('can:admin-permission');
+    Route::post('/formDetailHistory', 'HistoryDetailsController@showDetailModal')->middleware('can:admin-permission');
     Route::post('/formDetailInvoiceReport', 'InvoiceDetailsController@showDetailModalReport');
     Route::post('/calcProfit', 'InvoiceController@calcProfit');
-    Route::post('/formEditUser', 'UserController@showEditModal');
-    Route::post('/sellDatatable', 'InvoiceController@datatable');
-    Route::post('/generateSellPdf', 'InvoiceController@generateSellPdf');
+    Route::post('/formEditUser', 'UserController@showEditModal')->middleware('can:admin-permission');
+    Route::post('/sellDatatable', 'InvoiceController@datatable')->middleware('can:admin-permission');
+    Route::post('/generateSellPdf', 'InvoiceController@generateSellPdf')->middleware('can:admin-permission');
 });
 
 Auth::routes();

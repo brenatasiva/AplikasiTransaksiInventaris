@@ -108,6 +108,7 @@
                             </div>
                         @endif
                         
+                        @if (Auth::user()->role=='Admin')
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Barang
@@ -117,12 +118,11 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="/item">Daftar Barang</a>
                             </nav>
-                            @if (Auth::user()->role=='Admin')
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/addItem">Pembelian Barang</a>
-                                </nav>
-                            @endif
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/addItem">Pembelian Barang</a>
+                            </nav>
                         </div>
+                        @endif
                         {{-- <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
