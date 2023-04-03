@@ -61,7 +61,11 @@
                 table.ajax.reload(null,false);
             },
             error: function (xhr) {
-                alert("Pastikan tanggal sudah sesuai");
+                Swal.fire({
+                title: 'PERINGATAN',
+                text: "Pastikan Tanggal Sudah Sesuai",
+                icon: 'warning'
+                })
                 console.log(xhr);
             }
         });

@@ -114,7 +114,9 @@
                                 '<td><input type="number" name="buyPrice[]" class="form-control" value="'+buyPrice+'" onClick="this.select();" required></td>'+
                                 '<td class="col-md-2"><input type="number" name="quantity[]" class="form-control" value="'+quantity+'" onClick="this.select();" required></td>'+
                                 '<td><button class="btn btn-danger btnHapus">Hapus</button></td></tr>');
-
+            
+            $("#quantity").val();
+            $("#buyPrice").val();
         });
 
         $('body').on('click', '.btnHapus', function() {

@@ -107,7 +107,7 @@ function isValidForm(form){
             if(quantity > stock){
                 Swal.fire({
                 title: 'PERINGATAN',
-                text: "Jumlah melebihi Stok! Stok " + item[1] + " sekarang = " + stock,
+                text: "Jumlah Melebihi Stok! Stok " + item[1] + " sekarang = " + stock,
                 icon: 'warning'
                 })
             }

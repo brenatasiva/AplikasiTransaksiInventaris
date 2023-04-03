@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\History;
 use App\Models\Invoice;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -145,8 +146,10 @@ class HistoryController extends Controller
             $total = $h->insertHistoryDetail($request, $h->history_id);
             $h->total = $total;
             $h->save();
+            
             Alert::success('SUKSES', 'Berhasil Membeli Barang');
-            return back();
+            $data = Item::all();
+            return view('item.index', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
             Alert::error('GAGAL', 'Gagal Membeli Barang');
