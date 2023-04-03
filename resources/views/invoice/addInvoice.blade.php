@@ -7,10 +7,8 @@
     <li class="breadcrumb-item active"><a href="/transaction">Transaksi</a></li>
     <li class="breadcrumb-item">Tambah Transaksi</li>
 </ol>
-
-
 <div class="container">
-    <form action="{{ url('/submitInvoice') }}" method="post" autocomplete="off">
+    <form action="{{ url('/submitInvoice') }}" method="post" autocomplete="off" onsubmit="return isValidForm(this)">
         <div class="form-group row">
             <label for="customerName" class="col-sm-2 col-form-label">Nama Pelanggan:</label>
             <div class="col-sm-10">
@@ -55,25 +53,45 @@
             <div class="col-md-4">
                 <h2 class="text-black bg-warning">Total Rp. <label id="total">0</label></h2>
                 <label for="customerName" class="form-label">Bayar:</label>
-                <input type="text" id="pay" name="pay" class="form-control" onClick="this.select();">
+                <input type="text" id="pay" name="pay" class="form-control" onClick="this.select();" required>
                 <br>
                 <h5 class="text-black bg-warning">Kembalian <b>Rp. <label id="kembalian">0</label></b></h5>
                 <br>
-                <button type="submit" class="form-control btn btn-success" onclick="if(!confirm('Apakah anda yakin data yang di inputkan benar? Pastikan Nama barang sudah sesuai')){return false;}">Simpan</button>
+                <button class="form-control btn btn-success">Simpan</button>
             </div>
         </div>
             
-        </form> 
+    </form> 
 </div>
 @endsection
 @section('script')
 <script type="text/javascript">
+var arrItem = $.map(@json($data), function(value, index){ return [value]; });
+
+function isValidForm(form){
+    var pay = parseInt($('#pay').val().replace(',', ''));
+    var total = parseInt($("#total").text().replace(/,/g, ""));
+
+    if(pay < total) {
+        Swal.fire({
+        title: 'GAGAL TRANSAKSI',
+        text: "Jumlah Uang kurang!",
+        icon: 'error'
+        })
+        return false;
+    }else{
+        return true;
+    }
+}
+
     $(document).ready(function() {
+
         $("#add_item").click(function() {
             var items = $("#item").val();
             var item = items.split('|');
             var quantity = $("#quantity").val();
             var subtotal = item[2] * quantity;
+
             $('tr').find('input');
             $("#body").append('<tr><td><input type="text" name="name[]" class="form-control" value="'+item[1]+'" readonly></td>'+
                                 '<td><input type="number" name="price[]" class="form-control" value="'+item[2].toLocaleString()+'" readonly ></td>'+
@@ -81,8 +99,18 @@
                                 '<td class="subtotal">'+subtotal.toLocaleString()+'</td>'+
                                 '<td><button class="btn btn-danger btnHapus">Hapus</button></td></tr>');
             $("#total").html((parseInt($("#total").text().replace(/,/g, "")) + subtotal).toLocaleString());
-            $("#pay").val('');
-            $("#kembalian").html('0');
+
+            calcKembalian(parseInt($('#pay').val().replace(',', '')));
+
+            var stock = parseFloat(arrItem.find((o) => { return o["name"] === item[1] })['stock']);
+
+            if(quantity > stock){
+                Swal.fire({
+                title: 'PERINGATAN',
+                text: "Jumlah melebihi Stok! Stok " + item[1] + " sekarang = " + stock,
+                icon: 'warning'
+                })
+            }
         });
 
         function countTotal(){
@@ -99,8 +127,9 @@
         $('body').on('click', '.btnHapus', function() {
             $(this).parent().parent().remove();
             countTotal();
-            $("#pay").val('');
-            $("#kembalian").html('0');
+            calcKembalian(parseInt($('#pay').val().replace(',', '')));
+            // $("#pay").val('');
+            // $("#kembalian").html('0');
         });
 
         function calcKembalian(value){

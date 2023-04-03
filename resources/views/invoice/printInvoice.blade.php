@@ -29,9 +29,9 @@
             @foreach($invoiceDetails as $iD)
                 <tr>
                     <td>{{$iD['item_name']}}</td>
-                    <td>{{$iD['price']}}</td>
+                    <td>{{number_format($iD['price'])}}</td>
                     <td>{{$iD['quantity']}}</td>
-                    <td>{{$iD['subtotal']}}</td>
+                    <td>{{number_format($iD['subtotal'])}}</td>
                 </tr>
             @endforeach
             <tr>
@@ -39,15 +39,15 @@
 			</tr>
 			<tr>
 				<td align="right" colspan="3">Total</td>
-				<td align="right">{{$i['total']}}</td>
+				<td align="right">Rp. {{number_format($i['total'])}}</td>
 			</tr>
 			<tr>
 				<td align="right" colspan="3">Bayar</td>
-				<td align="right"></td>
+				<td align="right">Rp. {{number_format($i['pay'])}}</td>
 			</tr>
 			<tr>
 				<td align="right" colspan="3">Kembali</td>
-				<td align="right"></td>
+				<td align="right">Rp. {{number_format($i['pay']-$i['total'])}}</td>
 			</tr>
         </table>
 		<table width="500" border="0" cellpadding="1" cellspacing="0">

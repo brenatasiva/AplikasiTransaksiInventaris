@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -32,7 +33,8 @@ class UserController extends Controller
             return view('user.index', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -93,10 +95,12 @@ class UserController extends Controller
             $user->name = $request->get('name');
             $user->email = $request->get('email');
             $user->save();
-            return redirect()->back()->with('success', 'Data user berhasil dirubah');
+            Alert::success('SUKSES', 'Berhasil Mengubah User');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal mengubah user');
+            Alert::error('GAGAL', 'Gagal Mengubah User');
+            return back();
         }
     }
 
@@ -111,10 +115,12 @@ class UserController extends Controller
         try {
             //code...
             $user->delete();
-            return redirect()->back()->with('success', 'User berhasil dihapus');
+            Alert::success('SUKSES', 'Berhasil Menghapus User');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal menghapus user');
+            Alert::error('GAGAL', 'Gagal Menghapus User');
+            return back();
         }
     }
 
@@ -129,7 +135,8 @@ class UserController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 }

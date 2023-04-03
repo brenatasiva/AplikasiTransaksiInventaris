@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ItemController extends Controller
 {
@@ -31,7 +32,8 @@ class ItemController extends Controller
             return view('item.index', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('Error', 'Gagal');
+            return back();
         }
     }
 
@@ -44,11 +46,12 @@ class ItemController extends Controller
     {
         try {
             //code...
-            $data = Item::pluck('name');
+            $data = Item::all()->sortBy("name");
             return view('item.addItem', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('Error', 'Gagal');
+            return back();
         }
     }
 
@@ -70,10 +73,12 @@ class ItemController extends Controller
             $data->unit = $request->get('unit');
             $data->stock = $request->get('stock');
             $data->save();
-            return redirect()->back()->with('success', 'Barang berhasil ditambahkan');
+            Alert::success('SUKSES', 'Berhasil Menambah Barang');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal menambahkan barang');
+            Alert::error('GAGAL', 'Gagal Menambah Barang');
+            return back();
         }
     }
 
@@ -116,10 +121,13 @@ class ItemController extends Controller
             $item->unit = $request->get('unit');
             $item->stock = $request->get('stock');
             $item->save();
-            return redirect()->back()->with('success', 'Data barang berhasil dirubah');
+
+            Alert::success('SUKSES', 'Berhasil Mengubah Barang');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal mengubah barang');
+            Alert::error('GAGAL', 'Gagal Mengubah Barang');
+            return back();
         }
     }
 
@@ -134,10 +142,12 @@ class ItemController extends Controller
         try {
             //code...
             $item->delete();
-            return redirect()->back()->with('success', 'Barang berhasil dihapus');
+            Alert::success('SUKSES', 'Berhasil Menghapus Barang');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal menghapus barang');
+            Alert::error('GAGAL', 'Gagal Menghapus Barang');
+            return back();
         }
     }
 
@@ -152,7 +162,8 @@ class ItemController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 }

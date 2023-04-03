@@ -8,6 +8,7 @@ use App\Models\InvoiceDetails;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InvoiceController extends Controller
 {
@@ -34,7 +35,8 @@ class InvoiceController extends Controller
             return view('invoice.index', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -51,7 +53,8 @@ class InvoiceController extends Controller
             return view('invoice.addInvoice', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -82,11 +85,12 @@ class InvoiceController extends Controller
             $invoice = Invoice::all()->where('invoice_id', $i->invoice_id);
             $invoiceDetails = InvoiceDetails::all()->where('invoice_id', $i->invoice_id);
 
-            return view('invoice.printInvoice', compact('invoice', 'invoiceDetails'))->with('success', 'Transaksi berhasil');
-            // return redirect()->back()->with('success', 'Transaksi berhasil');
+            Alert::success('SUKSES', 'Transaksi Berhasil');
+            return view('invoice.printInvoice', compact('invoice', 'invoiceDetails'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Transaksi gagal');
+            Alert::error('GAGAL', 'Transaksi Gagal');
+            return back();
         }
     }
 
@@ -146,7 +150,8 @@ class InvoiceController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -158,7 +163,8 @@ class InvoiceController extends Controller
             return view('report.sellIndex', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -186,8 +192,8 @@ class InvoiceController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -199,7 +205,8 @@ class InvoiceController extends Controller
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal datatable');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 

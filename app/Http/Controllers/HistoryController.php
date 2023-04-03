@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\History;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
-use Codedge\Fpdf\Fpdf\Fpdf;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HistoryController extends Controller
 {
@@ -32,7 +32,8 @@ class HistoryController extends Controller
             return view('report.index', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -81,7 +82,8 @@ class HistoryController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -127,7 +129,8 @@ class HistoryController extends Controller
             return view('report.buyIndex', compact('data'));
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 
@@ -142,10 +145,12 @@ class HistoryController extends Controller
             $total = $h->insertHistoryDetail($request, $h->history_id);
             $h->total = $total;
             $h->save();
-            return redirect()->back()->with('success', 'Barang berhasil ditambahkan');
+            Alert::success('SUKSES', 'Berhasil Membeli Barang');
+            return back();
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal menambahkan barang');
+            Alert::error('GAGAL', 'Gagal Membeli Barang');
+            return back();
         }
 
     }
@@ -171,7 +176,8 @@ class HistoryController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 }

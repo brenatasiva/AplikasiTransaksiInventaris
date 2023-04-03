@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InvoiceDetails;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class InvoiceDetailsController extends Controller
 {
@@ -95,7 +96,8 @@ class InvoiceDetailsController extends Controller
             ), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('fail', 'Gagal');
+            Alert::error('GAGAL', 'Gagal');
+            return back();
         }
     }
 }

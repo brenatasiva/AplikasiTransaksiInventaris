@@ -20,6 +20,7 @@
 </head>
 
 <body class="sb-nav-fixed">
+    @include('sweetalert::alert')
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="/"><i class="fas fa-user fa-trophy"></i> Toko Maju</a>
         @if (Auth::user())
@@ -143,7 +144,7 @@
             <main>
                 <div class="container-fluid">
                     <div class="container">
-                        @if (session('success'))
+                        {{-- @if (session('success'))
                             <div class="alert-solid alert-success">
                                 {{ session('success') }}
                             </div>
@@ -151,7 +152,7 @@
                             <div class="alert-solid alert-danger">
                                 {{ session('fail') }}
                             </div>
-                        @endif
+                        @endif --}}
                         @yield('content')
                     </div>
                 </div>
