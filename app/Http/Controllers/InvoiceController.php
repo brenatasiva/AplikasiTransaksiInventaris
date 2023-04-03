@@ -174,7 +174,7 @@ class InvoiceController extends Controller
             //code...
             // \DB::enableQueryLog();
             $startDate = $request->get('startDate');
-            $endDate = $request->get('endDate');
+            $endDate = date('Y-m-d H:i:s', strtotime($request->get('endDate'). ' + 23 hours 59 minutes 59 seconds'));
             $data = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
             // dd($data);
             $profit = 0;
@@ -213,7 +213,7 @@ class InvoiceController extends Controller
     public function generateSellPdf(Request $request)
     {
         $startDate = $request->get('startDate');
-        $endDate = $request->get('endDate');
+        $endDate = date('Y-m-d H:i:s', strtotime($request->get('endDate'). ' + 23 hours 59 minutes 59 seconds'));
         $invoice = Invoice::select('*')->where('date','<=',$endDate)->where('date','>=',$startDate)->get();
         $profit = 0;
         $omset = 0;

@@ -146,7 +146,7 @@ class HistoryController extends Controller
             $total = $h->insertHistoryDetail($request, $h->history_id);
             $h->total = $total;
             $h->save();
-            
+
             Alert::success('SUKSES', 'Berhasil Membeli Barang');
             $data = Item::all();
             return view('item.index', compact('data'));
@@ -164,7 +164,7 @@ class HistoryController extends Controller
             //code...
             // \DB::enableQueryLog();
             $startDate = $request->get('startDate');
-            $endDate = $request->get('endDate');
+            $endDate = date('Y-m-d H:i:s', strtotime($request->get('endDate'). ' + 23 hours 59 minutes 59 seconds'));
             $data = Invoice::where('date','<=',$endDate)->where('date','>=',$startDate)->get();
             $profit = 0;
             $omset = 0;
